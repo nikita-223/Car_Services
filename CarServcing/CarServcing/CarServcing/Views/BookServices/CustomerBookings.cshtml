@@ -1,0 +1,93 @@
+﻿@model IEnumerable<CarServcing.Models.BookService>
+
+@{
+    ViewBag.Title = "CustomerBookings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>CustomerBookings</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CouponCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ServiceDetail.ServiceName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status.CurrentStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserDetail.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Feedback.Comment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TransactionDetail.BookingId)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CouponCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ServiceDetail.ServiceName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status.CurrentStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserDetail.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Feedback.Comment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransactionDetail.BookingId)
+            </td>
+            <td>
+                @{ if (item.StatusId == 3)
+                    {
+                        @Html.ActionLink("Approve |", "Approved", new { id = item.BookingId })
+                    }
+                }
+                @Html.ActionLink("Details", "Details", new { id = item.BookingId }) |
+                @Html.ActionLink("Cancel", "Delete", new { id = item.BookingId })
+
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,71 @@
+﻿@model IEnumerable<CarServcing.Models.Feedback>
+@{
+    ViewBag.Title = "Feedback";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Feedback</h2>
+
+<script src="~/Content/FileSaver.js"></script> @*could be downloaded from https://github.com/eligrey/FileSaver.js/blob/master/src/FileSaver.js*@
+<script>
+    function fnExcelReport(id, name) {
+        var tab_text = '<html xmlns: x="urn:schemas-microsoft-com:office:excel">';
+        tab_text = tab_text + '<head><xml><x: ExcelWorkbook><x: ExcelWorksheets><x: ExcelWorksheet>';
+        tab_text = tab_text + '<x: Name>Test Sheet</x: Name>';
+        tab_text = tab_text + '<x: WorksheetOptions><x: Panes></x: Panes></x: WorksheetOptions ></x: ExcelWorksheet > ';
+        tab_text = tab_text + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
+        tab_text = tab_text + "<table border='1px' style='color:black'>";
+
+
+        var exportTable = $('#' + id).clone();
+        //exportTable.find('th').last().remove();
+        exportTable.find('input').each(function (index, elem) { $(elem).remove(); });
+        exportTable.find('a').each(function (index, elem) { $(elem).remove(); });
+
+        tab_text = tab_text + exportTable.html();
+        tab_text = tab_text + '</table></body></html>';
+        var fileName = "Demo" + '.xls';
+
+        //Save the file
+        var blob = new Blob([tab_text], { type: "application/vnd.ms-excel;charset=utf-8" })
+        window.saveAs(blob, fileName);
+    }
+</script>
+
+<br />
+<br />
+<button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button>
+<br />
+<br />
+
+<div class="jumbotron">
+    <table class="table table-bordered" id="dataTable">
+        <thead>
+            <tr>
+                <th>Booking Id</th>
+                <th>Customer Name</th>
+                <th>Vendor Name</th>
+                <th>Q1 Rating</th>
+                <th>Q2 Rating</th>
+                <th>Comment</th>              
+               
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.BookingId</td>
+                    <td>@item.BookService.UserDetail.FirstName</td>
+                    <td>@item.BookService.ServiceDetail.UserDetail.FirstName</td>
+                    <td>@item.Q1Rating</td>
+                    <td>@item.Q2Rating</td>
+                    <td>@item.Comment</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+
+

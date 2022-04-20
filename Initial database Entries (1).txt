@@ -1,0 +1,44 @@
+//Populate Status,ServiceCategory,AdminDetails&Role
+
+INSERT INTO Status (CurrentStatus) Values ('Waiting For Approval');
+INSERT INTO Status (CurrentStatus) Values ('Approved');
+INSERT INTO Status (CurrentStatus) Values ('Reallocating');
+INSERT INTO Status (CurrentStatus) Values ('Transaction Completed');
+INSERT INTO Status (CurrentStatus) Values ('Closed');
+
+
+INSERT INTO ServiceCategories (CategoryName) Values ('Car Body Repairs');
+INSERT INTO ServiceCategories (CategoryName) Values ('Car Grooming Services');
+INSERT INTO ServiceCategories (CategoryName) Values ('Engine Repairs');
+INSERT INTO ServiceCategories (CategoryName) Values ('Wheel Inspection And Fixes');
+INSERT INTO ServiceCategories (CategoryName) Values ('Other');
+
+
+INSERT INTO UserDetails(Email,Password,FirstName,LastName,PhoneNumber,Address,UserType) 
+Values ('Admin1@gmail.com','abc&def','Admin1','A',9876543210,'Kerala','Admin');
+
+INSERT INTO UserDetails(Email,Password,FirstName,LastName,PhoneNumber,Address,UserType) 
+Values ('Admin2@gmail.com','ghi&jkl','Admin2','B',9876543211,'Maharashtra','Admin');
+
+INSERT INTO UserDetails(Email,Password,FirstName,LastName,PhoneNumber,Address,UserType) 
+Values ('Vendor1@gmail.com','mno&pqr','Vendor1','A',9876543212,'Karnataka','Vendor');
+
+INSERT INTO UserDetails(Email,Password,FirstName,LastName,PhoneNumber,Address,UserType) 
+Values ('Vendor2@gmail.com','stu&vwx','Vendor2','B',9876543213,'Punjab','Vendor');
+
+INSERT INTO UserDetails(Email,Password,FirstName,LastName,PhoneNumber,Address,UserType) 
+Values ('Customer1@gmail.com','123&456','Customer1','A',9876543214,'Gujarat','Customer');
+
+INSERT INTO UserDetails(Email,Password,FirstName,LastName,PhoneNumber,Address,UserType) 
+Values ('Customer2@gmail.com','654&321','Customer2','B',9876543215,'Goa','Customer');
+
+
+INSERT INTO UserRoles (UserId,Role) Values (1,'Admin');
+INSERT INTO UserRoles (UserId,Role) Values (2,'Admin');
+INSERT INTO UserRoles (UserId,Role) Values (3,'Vendor');
+INSERT INTO UserRoles (UserId,Role) Values (4,'Vendor');
+INSERT INTO UserRoles (UserId,Role) Values (5,'Customer');
+INSERT INTO UserRoles (UserId,Role) Values (6,'Customer');
+
+INSERT INTO Vendors (UserId,ApproverId,ApproveDate,Vendorstatus)Values(3,1,SYSDATETIME(),'Approved');
+INSERT INTO Vendors (UserId,ApproverId,ApproveDate,Vendorstatus)Values(4,1,SYSDATETIME(),'Approved');

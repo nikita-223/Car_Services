@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8280648baacb4c5b9e1dfbc05e090db1" Name="Diagram1">
+        <EntityTypeShape EntityType="CarServiceModel.BookService" Width="1.5" PointX="3" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarServiceModel.CouponDetail" Width="1.5" PointX="3" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarServiceModel.Customer" Width="1.5" PointX="3" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarServiceModel.Feedback" Width="1.5" PointX="5.25" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarServiceModel.ServiceCategory" Width="1.5" PointX="3.75" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarServiceModel.ServiceDetail" Width="1.5" PointX="6" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarServiceModel.Status" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarServiceModel.sysdiagram" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarServiceModel.TransactionDetail" Width="1.5" PointX="5.25" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarServiceModel.UserDetail" Width="1.5" PointX="0.75" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarServiceModel.UserRole" Width="1.5" PointX="3" PointY="20.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarServiceModel.Vendor" Width="1.5" PointX="3" PointY="22.875" IsExpanded="true" />
+        <AssociationConnector Association="CarServiceModel.fk_BookService_ServiceDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="CarServiceModel.fk_BookService_Status" ManuallyRouted="false" />
+        <AssociationConnector Association="CarServiceModel.fk_BookService_UserDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="CarServiceModel.fk_Feedback_BookService" ManuallyRouted="false" />
+        <AssociationConnector Association="CarServiceModel.fk_TransactionDetails_BookService" ManuallyRouted="false" />
+        <AssociationConnector Association="CarServiceModel.fk_CouponDetails_UserDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="CarServiceModel.fk_Customer_UserDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="CarServiceModel.fk_ServiceDetails_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="CarServiceModel.fk_ServiceDetails_UserDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="CarServiceModel.fk_UserRoles_UserDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="CarServiceModel.fk_Vendor_UserDetails" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

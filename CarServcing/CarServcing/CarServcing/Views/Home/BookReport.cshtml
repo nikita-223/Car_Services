@@ -1,0 +1,77 @@
+﻿@model IEnumerable<CarServcing.Models.BookService>
+
+@{
+    ViewBag.Title = "BookReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Content/FileSaver.js"></script> @*could be downloaded from https://github.com/eligrey/FileSaver.js/blob/master/src/FileSaver.js*@
+<script>
+    function fnExcelReport(id, name) {
+        var tab_text = '<html xmlns: x="urn:schemas-microsoft-com:office:excel">';
+        tab_text = tab_text + '<head><xml><x: ExcelWorkbook><x: ExcelWorksheets><x: ExcelWorksheet>';
+        tab_text = tab_text + '<x: Name>Test Sheet</x: Name>';
+        tab_text = tab_text + '<x: WorksheetOptions><x: Panes></x: Panes></x: WorksheetOptions ></x: ExcelWorksheet > ';
+        tab_text = tab_text + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
+        tab_text = tab_text + "<table border='1px' style='color:black'>";
+
+
+        var exportTable = $('#' + id).clone();
+        //exportTable.find('th').last().remove();
+        exportTable.find('input').each(function (index, elem) { $(elem).remove(); });
+        exportTable.find('a').each(function (index, elem) { $(elem).remove(); });
+
+        tab_text = tab_text + exportTable.html();
+        tab_text = tab_text + '</table></body></html>';
+        var fileName = "Demo" + '.xls';
+
+        //Save the file
+        var blob = new Blob([tab_text], { type: "application/vnd.ms-excel;charset=utf-8" })
+        window.saveAs(blob, fileName);
+    }
+</script>
+
+<br />
+<br />
+<button class="btn btn-primary" onclick="javascript: fnExcelReport('dataTable', 'data')">Export To Excel</button>
+<br />
+<br />
+
+<div class="jumbotron">
+    <table class="table table-bordered" id="dataTable">
+        <thead>
+            <tr>
+                <th>Booking Id</th>
+                <th>Service Name</th>
+                <th>User Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Service Center</th>
+                <th>Amount</th>
+                <th>Start Time</th>
+                <th>Close Time</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.BookingId</td>
+                    <td>@item.ServiceDetail.ServiceName</td>
+                    <td>@item.UserId</td>
+                    <td>@item.UserDetail.FirstName</td>
+                    <td>@item.UserDetail.Email</td>
+                    <td>@item.ServiceDetail.ServiceCenter</td>
+                    <td>@item.Amount</td>
+                    <td>@item.StartTime</td>
+                    <td>@item.EndTime</td>
+                    <td>@item.Status.CurrentStatus</td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>

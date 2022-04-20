@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "CustomerDashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Customer Dashboard</h2>
+<table class="table">
+    <tr>
+
+        <td>@Html.ActionLink("Book Service", "Create", "BookServices")</td>
+        <td>@Html.ActionLink("Booking History", "CustomerBookings", "BookServices")</td>
+        <td>@Html.ActionLink("All Service Details", "Index", "ServiceDetails")</td>
+    </tr>
+   
+</table>
+

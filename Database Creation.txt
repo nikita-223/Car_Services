@@ -1,0 +1,420 @@
+
+USE [CarService];
+GO
+IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
+GO
+
+-- --------------------------------------------------
+-- Dropping existing FOREIGN KEY constraints
+-- --------------------------------------------------
+
+IF OBJECT_ID(N'[dbo].[fk_BookService_ServiceDetails]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[BookServices] DROP CONSTRAINT [fk_BookService_ServiceDetails];
+GO
+IF OBJECT_ID(N'[dbo].[fk_BookService_Status]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[BookServices] DROP CONSTRAINT [fk_BookService_Status];
+GO
+IF OBJECT_ID(N'[dbo].[fk_BookService_UserDetails]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[BookServices] DROP CONSTRAINT [fk_BookService_UserDetails];
+GO
+IF OBJECT_ID(N'[dbo].[fk_CouponDetails_UserDetails]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CouponDetails] DROP CONSTRAINT [fk_CouponDetails_UserDetails];
+GO
+IF OBJECT_ID(N'[dbo].[fk_Customer_UserDetails]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Customers] DROP CONSTRAINT [fk_Customer_UserDetails];
+GO
+IF OBJECT_ID(N'[dbo].[fk_Feedback_BookService]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Feedbacks] DROP CONSTRAINT [fk_Feedback_BookService];
+GO
+IF OBJECT_ID(N'[dbo].[fk_ServiceDetails_Category]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ServiceDetails] DROP CONSTRAINT [fk_ServiceDetails_Category];
+GO
+IF OBJECT_ID(N'[dbo].[fk_ServiceDetails_UserDetails]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ServiceDetails] DROP CONSTRAINT [fk_ServiceDetails_UserDetails];
+GO
+IF OBJECT_ID(N'[dbo].[fk_TransactionDetails_BookService]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TransactionDetails] DROP CONSTRAINT [fk_TransactionDetails_BookService];
+GO
+IF OBJECT_ID(N'[dbo].[fk_UserRoles_UserDetails]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[UserRoles] DROP CONSTRAINT [fk_UserRoles_UserDetails];
+GO
+IF OBJECT_ID(N'[dbo].[fk_Vendor_UserDetails]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Vendors] DROP CONSTRAINT [fk_Vendor_UserDetails];
+GO
+
+-- --------------------------------------------------
+-- Dropping existing tables
+-- --------------------------------------------------
+
+IF OBJECT_ID(N'[dbo].[BookServices]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[BookServices];
+GO
+IF OBJECT_ID(N'[dbo].[CouponDetails]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[CouponDetails];
+GO
+IF OBJECT_ID(N'[dbo].[Customers]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Customers];
+GO
+IF OBJECT_ID(N'[dbo].[Feedbacks]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Feedbacks];
+GO
+IF OBJECT_ID(N'[dbo].[ServiceCategories]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ServiceCategories];
+GO
+IF OBJECT_ID(N'[dbo].[ServiceDetails]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ServiceDetails];
+GO
+IF OBJECT_ID(N'[dbo].[Status]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Status];
+GO
+IF OBJECT_ID(N'[dbo].[sysdiagrams]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[sysdiagrams];
+GO
+IF OBJECT_ID(N'[dbo].[TransactionDetails]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[TransactionDetails];
+GO
+IF OBJECT_ID(N'[dbo].[UserDetails]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[UserDetails];
+GO
+IF OBJECT_ID(N'[dbo].[UserRoles]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[UserRoles];
+GO
+IF OBJECT_ID(N'[dbo].[Vendors]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Vendors];
+GO
+
+-- --------------------------------------------------
+-- Creating all tables
+-- --------------------------------------------------
+
+-- Creating table 'BookServices'
+CREATE TABLE [dbo].[BookServices] (
+    [BookingId] int IDENTITY(1,1) NOT NULL,
+    [Date] datetime  NULL,
+    [StartTime] time  NULL,
+    [EndTime] time  NULL,
+    [Amount] decimal(10,2)  NULL,
+    [CouponCode] char(128)  NULL,
+    [ServiceDetailsId] int  NULL,
+    [UserId] int  NULL,
+    [StatusId] int  NULL
+);
+GO
+
+-- Creating table 'CouponDetails'
+CREATE TABLE [dbo].[CouponDetails] (
+    [UserId] int  NOT NULL,
+    [CouponCode] char(128)  NULL,
+    [Redeem] bit  NULL
+);
+GO
+
+-- Creating table 'Customers'
+CREATE TABLE [dbo].[Customers] (
+    [UserId] int  NOT NULL,
+    [AccountBalance] decimal(10,2)  NULL
+);
+GO
+
+-- Creating table 'Feedbacks'
+CREATE TABLE [dbo].[Feedbacks] (
+    [BookingId] int  NOT NULL,
+    [Q1Rating] int  NULL,
+    [Q2Rating] int  NULL,
+    [Comment] char(128)  NULL
+);
+GO
+
+-- Creating table 'ServiceCategories'
+CREATE TABLE [dbo].[ServiceCategories] (
+    [ServiceCategoryId] int IDENTITY(1,1) NOT NULL,
+    [CategoryName] char(128)  NULL
+);
+GO
+
+-- Creating table 'ServiceDetails'
+CREATE TABLE [dbo].[ServiceDetails] (
+    [ServiceDetailsId] int IDENTITY(1,1) NOT NULL,
+    [ServiceName] char(128)  NOT NULL,
+    [Cost] decimal(10,2)  NULL,
+    [OpeningTime] time  NULL,
+    [ClosingTime] time  NULL,
+    [ServiceCenter] char(128)  NULL,
+    [UserId] int  NULL,
+    [ServiceCategoryId] int  NULL
+);
+GO
+
+-- Creating table 'Status'
+CREATE TABLE [dbo].[Status] (
+    [StatusId] int IDENTITY(1,1) NOT NULL,
+    [CurrentStatus] char(128)  NULL
+);
+GO
+
+-- Creating table 'sysdiagrams'
+CREATE TABLE [dbo].[sysdiagrams] (
+    [name] nvarchar(128)  NOT NULL,
+    [principal_id] int  NOT NULL,
+    [diagram_id] int IDENTITY(1,1) NOT NULL,
+    [version] int  NULL,
+    [definition] varbinary(max)  NULL
+);
+GO
+
+-- Creating table 'TransactionDetails'
+CREATE TABLE [dbo].[TransactionDetails] (
+    [BookingId] int  NOT NULL,
+    [Amount] decimal(10,2)  NULL,
+    [TransactionDateTime] datetime  NULL
+);
+GO
+
+-- Creating table 'UserDetails'
+CREATE TABLE [dbo].[UserDetails] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Email] char(128)  NOT NULL,
+    [Password] char(128)  NOT NULL,
+    [FirstName] char(128)  NOT NULL,
+    [LastName] char(128)  NULL,
+    [PhoneNumber] bigint  NULL,
+    [Address] char(128)  NOT NULL,
+    [UserType] char(128)  NULL
+);
+GO
+
+-- Creating table 'UserRoles'
+CREATE TABLE [dbo].[UserRoles] (
+    [RoleId] int IDENTITY(1,1) NOT NULL,
+    [UserId] int  NOT NULL,
+    [Role] nvarchar(50)  NULL
+);
+GO
+
+-- Creating table 'Vendors'
+CREATE TABLE [dbo].[Vendors] (
+    [UserId] int  NOT NULL,
+    [ApproverId] int  NULL,
+    [ApproveDate] datetime  NULL,
+    [VendorStatus] nvarchar(50)  NULL
+);
+GO
+
+-- --------------------------------------------------
+-- Creating all PRIMARY KEY constraints
+-- --------------------------------------------------
+
+-- Creating primary key on [BookingId] in table 'BookServices'
+ALTER TABLE [dbo].[BookServices]
+ADD CONSTRAINT [PK_BookServices]
+    PRIMARY KEY CLUSTERED ([BookingId] ASC);
+GO
+
+-- Creating primary key on [UserId] in table 'CouponDetails'
+ALTER TABLE [dbo].[CouponDetails]
+ADD CONSTRAINT [PK_CouponDetails]
+    PRIMARY KEY CLUSTERED ([UserId] ASC);
+GO
+
+-- Creating primary key on [UserId] in table 'Customers'
+ALTER TABLE [dbo].[Customers]
+ADD CONSTRAINT [PK_Customers]
+    PRIMARY KEY CLUSTERED ([UserId] ASC);
+GO
+
+-- Creating primary key on [BookingId] in table 'Feedbacks'
+ALTER TABLE [dbo].[Feedbacks]
+ADD CONSTRAINT [PK_Feedbacks]
+    PRIMARY KEY CLUSTERED ([BookingId] ASC);
+GO
+
+-- Creating primary key on [ServiceCategoryId] in table 'ServiceCategories'
+ALTER TABLE [dbo].[ServiceCategories]
+ADD CONSTRAINT [PK_ServiceCategories]
+    PRIMARY KEY CLUSTERED ([ServiceCategoryId] ASC);
+GO
+
+-- Creating primary key on [ServiceDetailsId] in table 'ServiceDetails'
+ALTER TABLE [dbo].[ServiceDetails]
+ADD CONSTRAINT [PK_ServiceDetails]
+    PRIMARY KEY CLUSTERED ([ServiceDetailsId] ASC);
+GO
+
+-- Creating primary key on [StatusId] in table 'Status'
+ALTER TABLE [dbo].[Status]
+ADD CONSTRAINT [PK_Status]
+    PRIMARY KEY CLUSTERED ([StatusId] ASC);
+GO
+
+-- Creating primary key on [diagram_id] in table 'sysdiagrams'
+ALTER TABLE [dbo].[sysdiagrams]
+ADD CONSTRAINT [PK_sysdiagrams]
+    PRIMARY KEY CLUSTERED ([diagram_id] ASC);
+GO
+
+-- Creating primary key on [BookingId] in table 'TransactionDetails'
+ALTER TABLE [dbo].[TransactionDetails]
+ADD CONSTRAINT [PK_TransactionDetails]
+    PRIMARY KEY CLUSTERED ([BookingId] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'UserDetails'
+ALTER TABLE [dbo].[UserDetails]
+ADD CONSTRAINT [PK_UserDetails]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [RoleId] in table 'UserRoles'
+ALTER TABLE [dbo].[UserRoles]
+ADD CONSTRAINT [PK_UserRoles]
+    PRIMARY KEY CLUSTERED ([RoleId] ASC);
+GO
+
+-- Creating primary key on [UserId] in table 'Vendors'
+ALTER TABLE [dbo].[Vendors]
+ADD CONSTRAINT [PK_Vendors]
+    PRIMARY KEY CLUSTERED ([UserId] ASC);
+GO
+
+-- --------------------------------------------------
+-- Creating all FOREIGN KEY constraints
+-- --------------------------------------------------
+
+-- Creating foreign key on [ServiceDetailsId] in table 'BookServices'
+ALTER TABLE [dbo].[BookServices]
+ADD CONSTRAINT [fk_BookService_ServiceDetails]
+    FOREIGN KEY ([ServiceDetailsId])
+    REFERENCES [dbo].[ServiceDetails]
+        ([ServiceDetailsId])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'fk_BookService_ServiceDetails'
+CREATE INDEX [IX_fk_BookService_ServiceDetails]
+ON [dbo].[BookServices]
+    ([ServiceDetailsId]);
+GO
+
+-- Creating foreign key on [StatusId] in table 'BookServices'
+ALTER TABLE [dbo].[BookServices]
+ADD CONSTRAINT [fk_BookService_Status]
+    FOREIGN KEY ([StatusId])
+    REFERENCES [dbo].[Status]
+        ([StatusId])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'fk_BookService_Status'
+CREATE INDEX [IX_fk_BookService_Status]
+ON [dbo].[BookServices]
+    ([StatusId]);
+GO
+
+-- Creating foreign key on [UserId] in table 'BookServices'
+ALTER TABLE [dbo].[BookServices]
+ADD CONSTRAINT [fk_BookService_UserDetails]
+    FOREIGN KEY ([UserId])
+    REFERENCES [dbo].[UserDetails]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'fk_BookService_UserDetails'
+CREATE INDEX [IX_fk_BookService_UserDetails]
+ON [dbo].[BookServices]
+    ([UserId]);
+GO
+
+-- Creating foreign key on [BookingId] in table 'Feedbacks'
+ALTER TABLE [dbo].[Feedbacks]
+ADD CONSTRAINT [fk_Feedback_BookService]
+    FOREIGN KEY ([BookingId])
+    REFERENCES [dbo].[BookServices]
+        ([BookingId])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [BookingId] in table 'TransactionDetails'
+ALTER TABLE [dbo].[TransactionDetails]
+ADD CONSTRAINT [fk_TransactionDetails_BookService]
+    FOREIGN KEY ([BookingId])
+    REFERENCES [dbo].[BookServices]
+        ([BookingId])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [UserId] in table 'CouponDetails'
+ALTER TABLE [dbo].[CouponDetails]
+ADD CONSTRAINT [fk_CouponDetails_UserDetails]
+    FOREIGN KEY ([UserId])
+    REFERENCES [dbo].[UserDetails]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [UserId] in table 'Customers'
+ALTER TABLE [dbo].[Customers]
+ADD CONSTRAINT [fk_Customer_UserDetails]
+    FOREIGN KEY ([UserId])
+    REFERENCES [dbo].[UserDetails]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [ServiceCategoryId] in table 'ServiceDetails'
+ALTER TABLE [dbo].[ServiceDetails]
+ADD CONSTRAINT [fk_ServiceDetails_Category]
+    FOREIGN KEY ([ServiceCategoryId])
+    REFERENCES [dbo].[ServiceCategories]
+        ([ServiceCategoryId])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'fk_ServiceDetails_Category'
+CREATE INDEX [IX_fk_ServiceDetails_Category]
+ON [dbo].[ServiceDetails]
+    ([ServiceCategoryId]);
+GO
+
+-- Creating foreign key on [UserId] in table 'ServiceDetails'
+ALTER TABLE [dbo].[ServiceDetails]
+ADD CONSTRAINT [fk_ServiceDetails_UserDetails]
+    FOREIGN KEY ([UserId])
+    REFERENCES [dbo].[UserDetails]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'fk_ServiceDetails_UserDetails'
+CREATE INDEX [IX_fk_ServiceDetails_UserDetails]
+ON [dbo].[ServiceDetails]
+    ([UserId]);
+GO
+
+-- Creating foreign key on [UserId] in table 'UserRoles'
+ALTER TABLE [dbo].[UserRoles]
+ADD CONSTRAINT [fk_UserRoles_UserDetails]
+    FOREIGN KEY ([UserId])
+    REFERENCES [dbo].[UserDetails]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'fk_UserRoles_UserDetails'
+CREATE INDEX [IX_fk_UserRoles_UserDetails]
+ON [dbo].[UserRoles]
+    ([UserId]);
+GO
+
+-- Creating foreign key on [UserId] in table 'Vendors'
+ALTER TABLE [dbo].[Vendors]
+ADD CONSTRAINT [fk_Vendor_UserDetails]
+    FOREIGN KEY ([UserId])
+    REFERENCES [dbo].[UserDetails]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- --------------------------------------------------
+-- Script has ended
+-- --------------------------------------------------

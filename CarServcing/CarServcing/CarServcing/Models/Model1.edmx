@@ -1,0 +1,795 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CarServiceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BookServices">
+          <Key>
+            <PropertyRef Name="BookingId" />
+          </Key>
+          <Property Name="BookingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="StartTime" Type="time" Precision="7" />
+          <Property Name="EndTime" Type="time" Precision="7" />
+          <Property Name="Amount" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="CouponCode" Type="char" MaxLength="128" />
+          <Property Name="ServiceDetailsId" Type="int" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="StatusId" Type="int" />
+        </EntityType>
+        <EntityType Name="CouponDetails">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CouponCode" Type="char" MaxLength="128" />
+          <Property Name="Redeem" Type="bit" />
+        </EntityType>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="AccountBalance" Type="decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="Feedbacks">
+          <Key>
+            <PropertyRef Name="BookingId" />
+          </Key>
+          <Property Name="BookingId" Type="int" Nullable="false" />
+          <Property Name="Q1Rating" Type="int" />
+          <Property Name="Q2Rating" Type="int" />
+          <Property Name="Comment" Type="char" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="ServiceCategories">
+          <Key>
+            <PropertyRef Name="ServiceCategoryId" />
+          </Key>
+          <Property Name="ServiceCategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="char" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="ServiceDetails">
+          <Key>
+            <PropertyRef Name="ServiceDetailsId" />
+          </Key>
+          <Property Name="ServiceDetailsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ServiceName" Type="char" MaxLength="128" Nullable="false" />
+          <Property Name="Cost" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="OpeningTime" Type="time" Precision="7" />
+          <Property Name="ClosingTime" Type="time" Precision="7" />
+          <Property Name="ServiceCenter" Type="char" MaxLength="128" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="ServiceCategoryId" Type="int" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="StatusId" />
+          </Key>
+          <Property Name="StatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CurrentStatus" Type="char" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TransactionDetails">
+          <Key>
+            <PropertyRef Name="BookingId" />
+          </Key>
+          <Property Name="BookingId" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="TransactionDateTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="UserDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="char" MaxLength="128" Nullable="false" />
+          <Property Name="Password" Type="char" MaxLength="128" Nullable="false" />
+          <Property Name="FirstName" Type="char" MaxLength="128" Nullable="false" />
+          <Property Name="LastName" Type="char" MaxLength="128" />
+          <Property Name="PhoneNumber" Type="bigint" />
+          <Property Name="Address" Type="char" MaxLength="128" Nullable="false" />
+          <Property Name="UserType" Type="char" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="UserRoles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Role" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Vendors">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ApproverId" Type="int" />
+          <Property Name="ApproveDate" Type="datetime" />
+          <Property Name="VendorStatus" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="fk_BookService_ServiceDetails">
+          <End Role="ServiceDetails" Type="Self.ServiceDetails" Multiplicity="0..1" />
+          <End Role="BookServices" Type="Self.BookServices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceDetails">
+              <PropertyRef Name="ServiceDetailsId" />
+            </Principal>
+            <Dependent Role="BookServices">
+              <PropertyRef Name="ServiceDetailsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_BookService_Status">
+          <End Role="Status" Type="Self.Status" Multiplicity="0..1" />
+          <End Role="BookServices" Type="Self.BookServices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="BookServices">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_BookService_UserDetails">
+          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="0..1" />
+          <End Role="BookServices" Type="Self.BookServices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BookServices">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_CouponDetails_UserDetails">
+          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
+          <End Role="CouponDetails" Type="Self.CouponDetails" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CouponDetails">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Customer_UserDetails">
+          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Feedback_BookService">
+          <End Role="BookServices" Type="Self.BookServices" Multiplicity="1" />
+          <End Role="Feedbacks" Type="Self.Feedbacks" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="BookServices">
+              <PropertyRef Name="BookingId" />
+            </Principal>
+            <Dependent Role="Feedbacks">
+              <PropertyRef Name="BookingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ServiceDetails_Category">
+          <End Role="ServiceCategories" Type="Self.ServiceCategories" Multiplicity="0..1" />
+          <End Role="ServiceDetails" Type="Self.ServiceDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceCategories">
+              <PropertyRef Name="ServiceCategoryId" />
+            </Principal>
+            <Dependent Role="ServiceDetails">
+              <PropertyRef Name="ServiceCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ServiceDetails_UserDetails">
+          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="0..1" />
+          <End Role="ServiceDetails" Type="Self.ServiceDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ServiceDetails">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_TransactionDetails_BookService">
+          <End Role="BookServices" Type="Self.BookServices" Multiplicity="1" />
+          <End Role="TransactionDetails" Type="Self.TransactionDetails" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="BookServices">
+              <PropertyRef Name="BookingId" />
+            </Principal>
+            <Dependent Role="TransactionDetails">
+              <PropertyRef Name="BookingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_UserRoles_UserDetails">
+          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
+          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Vendor_UserDetails">
+          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
+          <End Role="Vendors" Type="Self.Vendors" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vendors">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CarServiceModelStoreContainer">
+          <EntitySet Name="BookServices" EntityType="Self.BookServices" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CouponDetails" EntityType="Self.CouponDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Feedbacks" EntityType="Self.Feedbacks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceCategories" EntityType="Self.ServiceCategories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceDetails" EntityType="Self.ServiceDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TransactionDetails" EntityType="Self.TransactionDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserDetails" EntityType="Self.UserDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vendors" EntityType="Self.Vendors" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_BookService_ServiceDetails" Association="Self.fk_BookService_ServiceDetails">
+            <End Role="ServiceDetails" EntitySet="ServiceDetails" />
+            <End Role="BookServices" EntitySet="BookServices" />
+          </AssociationSet>
+          <AssociationSet Name="fk_BookService_Status" Association="Self.fk_BookService_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="BookServices" EntitySet="BookServices" />
+          </AssociationSet>
+          <AssociationSet Name="fk_BookService_UserDetails" Association="Self.fk_BookService_UserDetails">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="BookServices" EntitySet="BookServices" />
+          </AssociationSet>
+          <AssociationSet Name="fk_CouponDetails_UserDetails" Association="Self.fk_CouponDetails_UserDetails">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="CouponDetails" EntitySet="CouponDetails" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Customer_UserDetails" Association="Self.fk_Customer_UserDetails">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="Customers" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Feedback_BookService" Association="Self.fk_Feedback_BookService">
+            <End Role="BookServices" EntitySet="BookServices" />
+            <End Role="Feedbacks" EntitySet="Feedbacks" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ServiceDetails_Category" Association="Self.fk_ServiceDetails_Category">
+            <End Role="ServiceCategories" EntitySet="ServiceCategories" />
+            <End Role="ServiceDetails" EntitySet="ServiceDetails" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ServiceDetails_UserDetails" Association="Self.fk_ServiceDetails_UserDetails">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="ServiceDetails" EntitySet="ServiceDetails" />
+          </AssociationSet>
+          <AssociationSet Name="fk_TransactionDetails_BookService" Association="Self.fk_TransactionDetails_BookService">
+            <End Role="BookServices" EntitySet="BookServices" />
+            <End Role="TransactionDetails" EntitySet="TransactionDetails" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UserRoles_UserDetails" Association="Self.fk_UserRoles_UserDetails">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Vendor_UserDetails" Association="Self.fk_Vendor_UserDetails">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="Vendors" EntitySet="Vendors" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CarServiceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BookService">
+          <Key>
+            <PropertyRef Name="BookingId" />
+          </Key>
+          <Property Name="BookingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="StartTime" Type="Time" Precision="7" />
+          <Property Name="EndTime" Type="Time" Precision="7" />
+          <Property Name="Amount" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="CouponCode" Type="String" MaxLength="128" FixedLength="true" Unicode="false" />
+          <Property Name="ServiceDetailsId" Type="Int32" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="StatusId" Type="Int32" />
+          <NavigationProperty Name="ServiceDetail" Relationship="Self.fk_BookService_ServiceDetails" FromRole="BookServices" ToRole="ServiceDetails" />
+          <NavigationProperty Name="Status" Relationship="Self.fk_BookService_Status" FromRole="BookServices" ToRole="Status" />
+          <NavigationProperty Name="UserDetail" Relationship="Self.fk_BookService_UserDetails" FromRole="BookServices" ToRole="UserDetails" />
+          <NavigationProperty Name="Feedback" Relationship="Self.fk_Feedback_BookService" FromRole="BookServices" ToRole="Feedbacks" />
+          <NavigationProperty Name="TransactionDetail" Relationship="Self.fk_TransactionDetails_BookService" FromRole="BookServices" ToRole="TransactionDetails" />
+        </EntityType>
+        <EntityType Name="CouponDetail">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="CouponCode" Type="String" MaxLength="128" FixedLength="true" Unicode="false" />
+          <Property Name="Redeem" Type="Boolean" />
+          <NavigationProperty Name="UserDetail" Relationship="Self.fk_CouponDetails_UserDetails" FromRole="CouponDetails" ToRole="UserDetails" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="AccountBalance" Type="Decimal" Precision="10" Scale="2" />
+          <NavigationProperty Name="UserDetail" Relationship="Self.fk_Customer_UserDetails" FromRole="Customers" ToRole="UserDetails" />
+        </EntityType>
+        <EntityType Name="Feedback">
+          <Key>
+            <PropertyRef Name="BookingId" />
+          </Key>
+          <Property Name="BookingId" Type="Int32" Nullable="false" />
+          <Property Name="Q1Rating" Type="Int32" />
+          <Property Name="Q2Rating" Type="Int32" />
+          <Property Name="Comment" Type="String" MaxLength="128" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="BookService" Relationship="Self.fk_Feedback_BookService" FromRole="Feedbacks" ToRole="BookServices" />
+        </EntityType>
+        <EntityType Name="ServiceCategory">
+          <Key>
+            <PropertyRef Name="ServiceCategoryId" />
+          </Key>
+          <Property Name="ServiceCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" MaxLength="128" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="ServiceDetails" Relationship="Self.fk_ServiceDetails_Category" FromRole="ServiceCategories" ToRole="ServiceDetails" />
+        </EntityType>
+        <EntityType Name="ServiceDetail">
+          <Key>
+            <PropertyRef Name="ServiceDetailsId" />
+          </Key>
+          <Property Name="ServiceDetailsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ServiceName" Type="String" MaxLength="128" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Cost" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="OpeningTime" Type="Time" Precision="7" />
+          <Property Name="ClosingTime" Type="Time" Precision="7" />
+          <Property Name="ServiceCenter" Type="String" MaxLength="128" FixedLength="true" Unicode="false" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="ServiceCategoryId" Type="Int32" />
+          <NavigationProperty Name="BookServices" Relationship="Self.fk_BookService_ServiceDetails" FromRole="ServiceDetails" ToRole="BookServices" />
+          <NavigationProperty Name="ServiceCategory" Relationship="Self.fk_ServiceDetails_Category" FromRole="ServiceDetails" ToRole="ServiceCategories" />
+          <NavigationProperty Name="UserDetail" Relationship="Self.fk_ServiceDetails_UserDetails" FromRole="ServiceDetails" ToRole="UserDetails" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="StatusId" />
+          </Key>
+          <Property Name="StatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CurrentStatus" Type="String" MaxLength="128" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="BookServices" Relationship="Self.fk_BookService_Status" FromRole="Status" ToRole="BookServices" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TransactionDetail">
+          <Key>
+            <PropertyRef Name="BookingId" />
+          </Key>
+          <Property Name="BookingId" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="TransactionDateTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="BookService" Relationship="Self.fk_TransactionDetails_BookService" FromRole="TransactionDetails" ToRole="BookServices" />
+        </EntityType>
+        <EntityType Name="UserDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" MaxLength="128" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="128" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="128" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="128" FixedLength="true" Unicode="false" />
+          <Property Name="PhoneNumber" Type="Int64" />
+          <Property Name="Address" Type="String" MaxLength="128" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="UserType" Type="String" MaxLength="128" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="BookServices" Relationship="Self.fk_BookService_UserDetails" FromRole="UserDetails" ToRole="BookServices" />
+          <NavigationProperty Name="CouponDetail" Relationship="Self.fk_CouponDetails_UserDetails" FromRole="UserDetails" ToRole="CouponDetails" />
+          <NavigationProperty Name="Customer" Relationship="Self.fk_Customer_UserDetails" FromRole="UserDetails" ToRole="Customers" />
+          <NavigationProperty Name="ServiceDetails" Relationship="Self.fk_ServiceDetails_UserDetails" FromRole="UserDetails" ToRole="ServiceDetails" />
+          <NavigationProperty Name="UserRoles" Relationship="Self.fk_UserRoles_UserDetails" FromRole="UserDetails" ToRole="UserRoles" />
+          <NavigationProperty Name="Vendor" Relationship="Self.fk_Vendor_UserDetails" FromRole="UserDetails" ToRole="Vendors" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserDetail" Relationship="Self.fk_UserRoles_UserDetails" FromRole="UserRoles" ToRole="UserDetails" />
+        </EntityType>
+        <EntityType Name="Vendor">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ApproverId" Type="Int32" />
+          <Property Name="ApproveDate" Type="DateTime" Precision="3" />
+          <Property Name="VendorStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserDetail" Relationship="Self.fk_Vendor_UserDetails" FromRole="Vendors" ToRole="UserDetails" />
+        </EntityType>
+        <Association Name="fk_BookService_ServiceDetails">
+          <End Role="ServiceDetails" Type="Self.ServiceDetail" Multiplicity="0..1" />
+          <End Role="BookServices" Type="Self.BookService" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceDetails">
+              <PropertyRef Name="ServiceDetailsId" />
+            </Principal>
+            <Dependent Role="BookServices">
+              <PropertyRef Name="ServiceDetailsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_BookService_Status">
+          <End Role="Status" Type="Self.Status" Multiplicity="0..1" />
+          <End Role="BookServices" Type="Self.BookService" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="BookServices">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_BookService_UserDetails">
+          <End Role="UserDetails" Type="Self.UserDetail" Multiplicity="0..1" />
+          <End Role="BookServices" Type="Self.BookService" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BookServices">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Feedback_BookService">
+          <End Role="BookServices" Type="Self.BookService" Multiplicity="1" />
+          <End Role="Feedbacks" Type="Self.Feedback" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="BookServices">
+              <PropertyRef Name="BookingId" />
+            </Principal>
+            <Dependent Role="Feedbacks">
+              <PropertyRef Name="BookingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_TransactionDetails_BookService">
+          <End Role="BookServices" Type="Self.BookService" Multiplicity="1" />
+          <End Role="TransactionDetails" Type="Self.TransactionDetail" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="BookServices">
+              <PropertyRef Name="BookingId" />
+            </Principal>
+            <Dependent Role="TransactionDetails">
+              <PropertyRef Name="BookingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_CouponDetails_UserDetails">
+          <End Role="UserDetails" Type="Self.UserDetail" Multiplicity="1" />
+          <End Role="CouponDetails" Type="Self.CouponDetail" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CouponDetails">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Customer_UserDetails">
+          <End Role="UserDetails" Type="Self.UserDetail" Multiplicity="1" />
+          <End Role="Customers" Type="Self.Customer" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ServiceDetails_Category">
+          <End Role="ServiceCategories" Type="Self.ServiceCategory" Multiplicity="0..1" />
+          <End Role="ServiceDetails" Type="Self.ServiceDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceCategories">
+              <PropertyRef Name="ServiceCategoryId" />
+            </Principal>
+            <Dependent Role="ServiceDetails">
+              <PropertyRef Name="ServiceCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ServiceDetails_UserDetails">
+          <End Role="UserDetails" Type="Self.UserDetail" Multiplicity="0..1" />
+          <End Role="ServiceDetails" Type="Self.ServiceDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ServiceDetails">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_UserRoles_UserDetails">
+          <End Role="UserDetails" Type="Self.UserDetail" Multiplicity="1" />
+          <End Role="UserRoles" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Vendor_UserDetails">
+          <End Role="UserDetails" Type="Self.UserDetail" Multiplicity="1" />
+          <End Role="Vendors" Type="Self.Vendor" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vendors">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CarServiceEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BookServices" EntityType="Self.BookService" />
+          <EntitySet Name="CouponDetails" EntityType="Self.CouponDetail" />
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Feedbacks" EntityType="Self.Feedback" />
+          <EntitySet Name="ServiceCategories" EntityType="Self.ServiceCategory" />
+          <EntitySet Name="ServiceDetails" EntityType="Self.ServiceDetail" />
+          <EntitySet Name="Status" EntityType="Self.Status" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="TransactionDetails" EntityType="Self.TransactionDetail" />
+          <EntitySet Name="UserDetails" EntityType="Self.UserDetail" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
+          <EntitySet Name="Vendors" EntityType="Self.Vendor" />
+          <AssociationSet Name="fk_BookService_ServiceDetails" Association="Self.fk_BookService_ServiceDetails">
+            <End Role="ServiceDetails" EntitySet="ServiceDetails" />
+            <End Role="BookServices" EntitySet="BookServices" />
+          </AssociationSet>
+          <AssociationSet Name="fk_BookService_Status" Association="Self.fk_BookService_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="BookServices" EntitySet="BookServices" />
+          </AssociationSet>
+          <AssociationSet Name="fk_BookService_UserDetails" Association="Self.fk_BookService_UserDetails">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="BookServices" EntitySet="BookServices" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Feedback_BookService" Association="Self.fk_Feedback_BookService">
+            <End Role="BookServices" EntitySet="BookServices" />
+            <End Role="Feedbacks" EntitySet="Feedbacks" />
+          </AssociationSet>
+          <AssociationSet Name="fk_TransactionDetails_BookService" Association="Self.fk_TransactionDetails_BookService">
+            <End Role="BookServices" EntitySet="BookServices" />
+            <End Role="TransactionDetails" EntitySet="TransactionDetails" />
+          </AssociationSet>
+          <AssociationSet Name="fk_CouponDetails_UserDetails" Association="Self.fk_CouponDetails_UserDetails">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="CouponDetails" EntitySet="CouponDetails" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Customer_UserDetails" Association="Self.fk_Customer_UserDetails">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="Customers" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ServiceDetails_Category" Association="Self.fk_ServiceDetails_Category">
+            <End Role="ServiceCategories" EntitySet="ServiceCategories" />
+            <End Role="ServiceDetails" EntitySet="ServiceDetails" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ServiceDetails_UserDetails" Association="Self.fk_ServiceDetails_UserDetails">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="ServiceDetails" EntitySet="ServiceDetails" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UserRoles_UserDetails" Association="Self.fk_UserRoles_UserDetails">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Vendor_UserDetails" Association="Self.fk_Vendor_UserDetails">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="Vendors" EntitySet="Vendors" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CarServiceModelStoreContainer" CdmEntityContainer="CarServiceEntities2">
+          <EntitySetMapping Name="BookServices">
+            <EntityTypeMapping TypeName="CarServiceModel.BookService">
+              <MappingFragment StoreEntitySet="BookServices">
+                <ScalarProperty Name="BookingId" ColumnName="BookingId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="CouponCode" ColumnName="CouponCode" />
+                <ScalarProperty Name="ServiceDetailsId" ColumnName="ServiceDetailsId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CouponDetails">
+            <EntityTypeMapping TypeName="CarServiceModel.CouponDetail">
+              <MappingFragment StoreEntitySet="CouponDetails">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CouponCode" ColumnName="CouponCode" />
+                <ScalarProperty Name="Redeem" ColumnName="Redeem" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="CarServiceModel.Customer">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="AccountBalance" ColumnName="AccountBalance" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Feedbacks">
+            <EntityTypeMapping TypeName="CarServiceModel.Feedback">
+              <MappingFragment StoreEntitySet="Feedbacks">
+                <ScalarProperty Name="BookingId" ColumnName="BookingId" />
+                <ScalarProperty Name="Q1Rating" ColumnName="Q1Rating" />
+                <ScalarProperty Name="Q2Rating" ColumnName="Q2Rating" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServiceCategories">
+            <EntityTypeMapping TypeName="CarServiceModel.ServiceCategory">
+              <MappingFragment StoreEntitySet="ServiceCategories">
+                <ScalarProperty Name="ServiceCategoryId" ColumnName="ServiceCategoryId" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServiceDetails">
+            <EntityTypeMapping TypeName="CarServiceModel.ServiceDetail">
+              <MappingFragment StoreEntitySet="ServiceDetails">
+                <ScalarProperty Name="ServiceDetailsId" ColumnName="ServiceDetailsId" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+                <ScalarProperty Name="OpeningTime" ColumnName="OpeningTime" />
+                <ScalarProperty Name="ClosingTime" ColumnName="ClosingTime" />
+                <ScalarProperty Name="ServiceCenter" ColumnName="ServiceCenter" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ServiceCategoryId" ColumnName="ServiceCategoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Status">
+            <EntityTypeMapping TypeName="CarServiceModel.Status">
+              <MappingFragment StoreEntitySet="Status">
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="CurrentStatus" ColumnName="CurrentStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="CarServiceModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionDetails">
+            <EntityTypeMapping TypeName="CarServiceModel.TransactionDetail">
+              <MappingFragment StoreEntitySet="TransactionDetails">
+                <ScalarProperty Name="BookingId" ColumnName="BookingId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="TransactionDateTime" ColumnName="TransactionDateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserDetails">
+            <EntityTypeMapping TypeName="CarServiceModel.UserDetail">
+              <MappingFragment StoreEntitySet="UserDetails">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="CarServiceModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRoles">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vendors">
+            <EntityTypeMapping TypeName="CarServiceModel.Vendor">
+              <MappingFragment StoreEntitySet="Vendors">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ApproverId" ColumnName="ApproverId" />
+                <ScalarProperty Name="ApproveDate" ColumnName="ApproveDate" />
+                <ScalarProperty Name="VendorStatus" ColumnName="VendorStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

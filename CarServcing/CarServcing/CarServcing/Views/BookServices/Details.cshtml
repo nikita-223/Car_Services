@@ -1,0 +1,110 @@
+﻿@model CarServcing.Models.BookService
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>BookService</h4>
+    <hr />
+    <dl class="dl-horizontal align-left">
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CouponCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CouponCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceDetail.ServiceName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ServiceDetail.ServiceName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status.CurrentStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status.CurrentStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserDetail.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserDetail.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Feedback.Comment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Feedback.Comment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TransactionDetail.BookingId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransactionDetail.BookingId)
+        </dd>
+        @if (User.IsInRole("Customer"))
+        {
+        if (Model.StatusId == 2)
+        {
+            @Html.ActionLink("Payment Portal", "PaymentPortal", new { id = Model.BookingId })
+        }
+        if (Model.StatusId == 4)
+        {
+            @Html.ActionLink("Give Feedback", "FeedbackForm", new { id = Model.BookingId })
+        }
+        }
+
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

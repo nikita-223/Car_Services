@@ -1,0 +1,105 @@
+﻿@model CarServcing.Models.BookService
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>BookService</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CouponCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CouponCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceDetail.ServiceName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ServiceDetail.ServiceName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status.CurrentStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status.CurrentStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserDetail.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserDetail.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Feedback.Comment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Feedback.Comment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TransactionDetail.BookingId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransactionDetail.BookingId)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

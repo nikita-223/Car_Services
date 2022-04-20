@@ -1,0 +1,87 @@
+﻿@model CarServcing.Models.ServiceDetail
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ServiceDetail</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ServiceName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Cost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OpeningTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OpeningTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClosingTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClosingTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceCenter)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ServiceCenter)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceCategory.CategoryName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ServiceCategory.CategoryName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserDetail.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserDetail.Email)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

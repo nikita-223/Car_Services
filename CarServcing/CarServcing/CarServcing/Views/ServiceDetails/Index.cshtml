@@ -1,0 +1,88 @@
+﻿@model IEnumerable<CarServcing.Models.ServiceDetail>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Service Details</h2>
+<p>
+    @using (Html.BeginForm("Index", "ServiceDetails", FormMethod.Get))
+    {
+        <b>Search By:</b>@Html.RadioButton("searchBy", "ServiceName", true) <text>Service Name</text>
+        @Html.RadioButton("searchBy", "ServiceCenter") <text>Service Center</text><br />
+        @Html.TextBox("search") <input type="submit" value="Search" />
+    }
+</p>
+
+<p>
+    @if (User.IsInRole("Vendor"))
+    {
+        @Html.ActionLink("Create New", "Create")
+    }
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ServiceName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OpeningTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClosingTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ServiceCenter)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ServiceCategory.CategoryName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserDetail.Email)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ServiceName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OpeningTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClosingTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ServiceCenter)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ServiceCategory.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserDetail.Email)
+            </td>
+            <td>
+
+                @Html.ActionLink("Details ", "Details", new { id = item.ServiceDetailsId })
+                @if (User.IsInRole("Vendor"))
+                {
+                    //@Html.ActionLink(" Delete |", "Delete", new { id = item.ServiceDetailsId })
+                    @Html.ActionLink(" Edit", "Edit", new { id = item.ServiceDetailsId })
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+

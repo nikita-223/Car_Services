@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "AdminDashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Admin Dashboard</h2>
+<table class="table">
+    <tr>
+        
+        <td>@Html.ActionLink("All Services", "Index", "ServiceDetails")</td>
+        <td>@Html.ActionLink("All Booking Details", "Index", "BookServices")</td>
+    </tr>
+</table>
+

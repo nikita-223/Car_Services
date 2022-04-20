@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("css", required: false)
+
+    @section css{
+        <link href="~/Content/RegFormBackground.css" rel="stylesheet" />
+    }
+    <script src="https://unpkg.com/scrollreveal"></script>
+</head>
+<body>
+    <div class="body-img"></div>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="@Url.Action("Index", "Home", new { area = "" })" style="padding:0px;">
+                    <img src="~/Images/ezgif-1-b4fe78f814d01.jpg" alt="" style="height:60px" />
+                </a>
+
+                @*@Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#divMain1">Home</a></li>
+                    <li><a href="#company">About</a></li>
+                    <li><a href="#contact">contact</a></li>
+                </ul>
+                <div class="nav-right">
+                    <ul class="nav navbar-nav ml-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li style="padding-left:15em"><a>@User.Identity.Name</a></li>
+
+
+                            <li>@Html.ActionLink("Dashboard", "Dashboard", "Account")</li>
+
+
+                            <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
+                        }
+                        else
+                        {
+
+                            <li>@Html.ActionLink("User Registration", "Signup", "Account")</li>
+                            <li>@Html.ActionLink("Login", "Login", "Account")</li>
+
+                        }
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container body-content">
+        @RenderBody()
+
+
+        <hr />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!--Smooth Scroll to div-->
+        <script>
+            $(document).ready(function () {
+                // Add smooth scrolling to all links
+                $("a").on('click', function (event) {
+
+                    // Make sure this.hash has a value before overriding default behavior
+                    if (this.hash !== "") {
+                        // Prevent default anchor click behavior
+                        event.preventDefault();
+
+                        // Store hash
+                        var hash = this.hash;
+
+                        // Using jQuery's animate() method to add smooth page scroll
+                        // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+                        $('html, body').animate({
+                            scrollTop: $(hash).offset().top
+                        }, 800, function () {
+
+                            // Add hash (#) to URL when done scrolling (default click behavior)
+                            window.location.hash = hash;
+                        });
+                    } // End if
+                });
+            });</script>
+
+        <!--Slide in left on Scroll-->
+        <script>
+            $(document).ready(function () {
+                $(window).scroll(function () {
+                    $('.slideInLeftJQuery').each(function (i) {
+
+                        var middle_of_object = $(this).offset().top + ($(this).outerHeight()) / 2;
+                        var bottom_of_window = $(window).scrollTop() + $(window).height();
+
+                        if (bottom_of_window > middle_of_object) {
+                            $(this).animate({ left: "0" }, 1000);
+                        }
+                    });
+                });
+            });</script>
+        <script>
+            function animateValue(obj, start, end, duration) {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    obj.innerHTML = Math.floor(progress * (end - start) + start);
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            }
+
+            const obj = document.getElementById("value");
+            animateValue(obj, 0, 10000, 8000);
+        </script>
+        <!--Slide in right on Scroll-->
+        <script>
+            $(document).ready(function () {
+                $(window).scroll(function () {
+                    $('.slideInRightJQuery').each(function (i) {
+
+                        var middle_of_object = $(this).offset().top + ($(this).outerHeight()) / 2;
+                        var bottom_of_window = $(window).scrollTop() + $(window).height();
+
+                        if (bottom_of_window > middle_of_object) {
+                            $(this).animate({ right: "0" }, 1000);
+                        }
+                    });
+                });
+            });</script>
+        <!--Slide in up on Scroll-->
+        <script>
+            $(document).ready(function () {
+                $(window).scroll(function () {
+                    $('.slideInUpJQuery').each(function (i) {
+
+                        var middle_of_object = $(this).offset().top + ($(this).outerHeight()) / 2;
+                        var bottom_of_window = $(window).scrollTop() + $(window).height();
+
+                        if (bottom_of_window > middle_of_object) {
+                            $(this).animate({ top: "0%" }, 2000);
+                        }
+                    });
+                });
+            });</script>
+        <!--Scroll Reveal-->
+        <script>ScrollReveal().reveal('.scrollReveal', { delay: 1000 });</script>
+        <div class="container navbar-fixed-bottom" style="position:relative">
+
+            <footer id="f1" style="clear:both; background-color:#2f3036; height:80px; padding-top:30px;width:100%; bottom:0px">
+                <div class="col-md-4 text-primary text-center">
+                    <p style="color:#9d9d9d">&copy; @DateTime.Now.Year - MS Car Servicing Application</p>
+                </div>
+                <div class="col-md-4 text-primary text-center">
+                    <p style="color:#9d9d9d">Phone no.- 9479675152</p>
+                </div>
+                <div class="col-md-4 text-primary text-center">
+                    <p style="color:#9d9d9d">Support:<a style="color:#9d9d9d" href="mailto:support@example.com">Support@msauto.com</a></p>
+                </div>
+
+
+            </footer>
+        </div>
+
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+</body>
+</html>

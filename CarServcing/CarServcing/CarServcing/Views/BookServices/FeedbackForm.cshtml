@@ -1,0 +1,64 @@
+﻿@model CarServcing.Models.Feedback
+@{
+    ViewBag.Title = "FeedbackForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Feedback Form</h2>
+<div>
+    <h4></h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.BookingId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BookingId)
+        </dd>
+    </dl>
+</div>
+<div>
+    @using (Html.BeginForm("FeedbackForm", "BookServices", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <table class="table">
+
+            <tr>
+                <td>@Html.Label("Rating out of 5 for Ease To Access Services", htmlAttributes: new { @class = "control-label" })</td>
+                <td>@Html.EditorFor(model => model.Q1Rating, new { htmlAttributes = new { @class = "form-control" } })</td>
+                <td>@Html.ValidationMessageFor(model => model.Q1Rating, "", new { @class = "text-danger" })</td>
+            </tr>
+
+
+            <tr>
+                <td>@Html.Label("Rating out of 5 for Service Done by Center", htmlAttributes: new { @class = "control-label" })</td>
+
+                <td>@Html.EditorFor(model => model.Q2Rating, new { htmlAttributes = new { @class = "form-control" } })</td>
+                <td>@Html.ValidationMessageFor(model => model.Q2Rating, "", new { @class = "text-danger" })</td>
+            </tr>
+
+
+
+            <tr>
+                <td>@Html.LabelFor(model => model.Comment, htmlAttributes: new { @class = "control-label" })</td>
+
+                <td>@Html.TextAreaFor(model => model.Comment, new { htmlAttributes = new { @class = "form-control" } })</td>
+                <td>@Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })</td>
+            </tr>
+
+
+        </table>
+        @Html.HiddenFor(model => model.BookingId, Model.BookingId)
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Submit" class="btn btn-default" />
+            </div>
+        </div>
+        <br />
+
+    }
+</div>
+
+

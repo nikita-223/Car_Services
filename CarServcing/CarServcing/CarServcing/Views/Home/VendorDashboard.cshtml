@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "VendorDashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Vendor Dashboard</h2>
+
+<table class="table">
+    <tr>
+        <td>Notifications</td>
+        <td>@Html.ActionLink("Add Service", "Create", "ServiceDetails")</td>
+        <td>Service Centers</td>
+    </tr>
+    <tr>
+        <td>@Html.ActionLink("All Service Details", "Index", "ServiceDetails")</td>
+        <td>@Html.ActionLink("All Booking Details", "Index", "BookServices")</td>
+        <td>@Html.ActionLink("Waiting For Approval", "WaitingApproval", "BookServices")</td>
+    </tr>
+</table>
+

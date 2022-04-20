@@ -1,0 +1,67 @@
+﻿@model CarServcing.Models.Vendor
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Dashboard</h2>
+
+@if (!(User.IsInRole("Admin") || User.IsInRole("Vendor") || User.IsInRole("Customer")))
+{
+    <table class="table">
+        <tr>
+            <td>Request of @User.Identity.Name is @Model.VendorStatus</td>
+        </tr>
+    </table>
+}
+@if (User.IsInRole("Admin"))
+{
+    {/*Admin's Dashboard*/}
+    <table class="table">
+        <tr>
+          
+            <td>@Html.ActionLink("Vendor List", "VendorList", "Account")
+            <td>@Html.ActionLink("All Services", "Index", "ServiceDetails")</td>
+            <td>@Html.ActionLink("All Booking Details", "Index", "BookServices")</td>           
+        </tr>
+        <tr>
+            <td>@Html.ActionLink("Service Details Report", "Report", "Home")</td>
+            <td>@Html.ActionLink("Booking Details Report", "BookReport", "Home")</td>
+            <td>@Html.ActionLink("Feedback Report", "Feedback", "Home")</td>
+            <td></td>
+        </tr>
+    </table>
+}
+
+@if (User.IsInRole("Vendor"))
+{
+    {/*Vendor's Dashboard*/}
+    <table class="table">
+        <tr>
+
+            <td>@Html.ActionLink("Add Service", "Create", "ServiceDetails")</td>
+            <td>@Html.ActionLink("Service Details", "Index", "ServiceDetails")</td>
+            <td>@Html.ActionLink("All Booking Details", "Index", "BookServices")</td>
+
+        </tr>
+        <tr>          
+         
+            <td>@Html.ActionLink("Waiting For Approval", "WaitingApproval", "BookServices")</td>
+            <td></td><td></td>
+        </tr>
+    </table>
+}
+@if (User.IsInRole("Customer"))
+{
+    {/*Customer's Dashboard*/}
+    <table class="table">
+        <tr>
+
+            <td>@Html.ActionLink("Book Service", "Create", "BookServices")</td>
+            <td>@Html.ActionLink("Booking History", "Index", "BookServices")</td>
+            <td>@Html.ActionLink("All Service Details", "Index", "ServiceDetails")</td>
+        </tr>
+      
+    </table>
+}
+

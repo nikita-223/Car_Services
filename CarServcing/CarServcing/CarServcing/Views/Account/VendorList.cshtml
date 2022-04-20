@@ -1,0 +1,34 @@
+﻿@model IEnumerable<CarServcing.Models.UserDetail>
+@{
+    ViewBag.Title = "VendorList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>VendorList</h2>
+<table class="table">
+    <tr>
+        <th>@Html.DisplayNameFor(m => m.FirstName)</th>
+        <th>@Html.DisplayNameFor(m => m.LastName)</th>
+        <th>@Html.DisplayNameFor(m => m.Email)</th>
+        <th>@Html.DisplayNameFor(m => m.PhoneNumber)</th>
+        <th>@Html.DisplayNameFor(m => m.Address)</th>
+        <th>@Html.DisplayName("Action")</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(m => item.FirstName)</td>
+            <td>@Html.DisplayFor(m => item.LastName)</td>
+            <td>@Html.DisplayFor(m => item.Email)</td>
+            <td>@Html.DisplayFor(m => item.PhoneNumber)</td>
+            <td>@Html.DisplayFor(m => item.Address)</td>
+            <td>@if(item.Vendor.VendorStatus=="Waiting For Approval")
+            {
+                @Html.ActionLink("Approve |", "VendorApproved", new { id = item.Id });
+                    @Html.ActionLink(" Reject", "VendorRejected", new { id = item.Id });
+                } 
+            </td>
+        </tr>
+    }
+</table>
+

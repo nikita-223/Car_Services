@@ -1,0 +1,11 @@
+﻿.body-img {
+    background: url('../Images/24064903.jpg');
+    background-repeat: no-repeat;
+    background-size: 24%;
+    position: fixed;
+    top: 41px;
+    left: 774px;
+    height: 100%;
+    opacity: 1;
+    width: 100%;
+}
